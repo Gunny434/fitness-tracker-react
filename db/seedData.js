@@ -7,6 +7,14 @@ const {
   getUserById,
   getUserByUsername, 
 } = require("./users");
+const {
+  getAllActivities,
+  getActivityById,
+  getActivityByName,
+  attachActivitiesToRoutines,
+  createActivity,
+  updateActivity,
+} = require("./activities");
 
 async function dropTables() {
   try {

@@ -27,13 +27,13 @@ async function getUser({ username, password }) {
   try {
     const user = await getUserByUsername(username);
     const hashedPassword = user.password;
-    const isValid = await bcrypt.compare(password, hashedPassword);
+    const passwordsMatch = await bcrypt.compare(password, hashedPassword);
 
-    if (!isValid) {
-      return null;
+    if (passwordsMatch) {
+      return user;
+    } else {
+      return SomeError;
     }
-
-    return user;
   } catch (error) {
     throw error;
   }
