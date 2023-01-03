@@ -15,6 +15,18 @@ const {
   createActivity,
   updateActivity,
 } = require("./activities");
+const {
+  getRoutineById,
+  getRoutinesWithoutActivities,
+  getAllRoutines,
+  getAllPublicRoutines,
+  getAllRoutinesByUser,
+  getPublicRoutinesByUser,
+  getPublicRoutinesByActivity,
+  createRoutine,
+  updateRoutine,
+  destroyRoutine,
+} = require("./routines");
 
 async function dropTables() {
   try {
