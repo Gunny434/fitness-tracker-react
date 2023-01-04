@@ -1,10 +1,4 @@
-//  console.log("Calling updateRoutine on routines");
-  // console.log(routines[1].id);
-  // const updateRoutinesResult = await updateRoutine(routines[1].id, {
-  //       name: "Big Boy Routine", 
-  //       goal: "To get swole!",
-  //       });
-  // console.log("Result:", updateRoutinesResult);
+
 
 
 
@@ -187,7 +181,15 @@ async function createInitialRoutines() {
     routinesToCreate.map((routine) => createRoutine(routine))
   )
   console.log("Routines Created: ", routines)
-  console.log("Finished creating routines.")  
+  console.log("Finished creating routines.")
+  
+  // console.log("Calling updateRoutine on routines");
+  // console.log(routines[1].id);
+  // const updateRoutinesResult = await updateRoutine(routines[1].id, {
+  //       name: "Big Boy Routine", 
+  //       goal: "To get swole!",
+  //       });
+  // console.log("Result:", updateRoutinesResult);
 }
 
 async function createInitialRoutineActivities() {
