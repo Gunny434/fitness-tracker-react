@@ -3,7 +3,7 @@ const client = require('./client');
 // database functions
 async function createActivity({ name, description }) {
   // return the new activity
-  const modName = name.toLowerCase();
+  // const modName = name.toLowerCase();
 
   try {
     const { rows: [ activity ] } = await client.query(`
@@ -11,7 +11,9 @@ async function createActivity({ name, description }) {
       VALUES ($1, $2)
       ON CONFLICT (name) DO NOTHING
       RETURNING *;
-    `, [modName, description]);
+    `, [name, description]);
+
+    console.log(activity);
 
     return activity;
   } catch (error) {
@@ -59,8 +61,8 @@ async function getActivityByName(name) {
     const { rows: [activity] } = await client.query(`
         SELECT *
         FROM activities
-        WHERE name=${name};
-    `);
+        WHERE name=$1;
+    `, [name]);
 
     if (!activity) {
         return null;
@@ -77,7 +79,7 @@ async function attachActivitiesToRoutines(routines) {
   // select and return an array of all activities
 }
 
-async function updateActivity( id, fields = {} ) {
+async function updateActivity({ id, ...fields }) {
   // don't try to update the id
   // do update the name and description
   // return the updated activity

@@ -50,8 +50,8 @@ async function getUserById(userId) {
     const { rows: [user] } = await client.query(`
         SELECT *
         FROM users
-        WHERE id=${userId};
-    `);
+        WHERE id=$1;
+    `, [userId]);
 
     // if (!user) {
     //     return null;

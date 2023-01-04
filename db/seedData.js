@@ -142,6 +142,12 @@ async function createInitialActivities() {
     console.log(activities)
 
     console.log("Finished creating activities!")
+
+    // console.log("Beginning updateActivity test...");
+    // const name = "Softball";
+    // const id = activities[1].id;
+    // const updatedActivity = await updateActivity({id, name});
+    // console.log("updatedActivity:", updatedActivity);
   } catch (error) {
     console.error("Error creating activities!")
     throw error
