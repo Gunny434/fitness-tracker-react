@@ -19,6 +19,7 @@ async function createUser({ username, password }) {
 
     return user;
   } catch (error) {
+    console.error(error);
     throw error;
   }
 }
@@ -32,9 +33,10 @@ async function getUser({ username, password }) {
     if (passwordsMatch) {
       return user;
     } else {
-      return SomeError;
+      return null;
     }
   } catch (error) {
+    console.error(error);
     throw error;
   }
 }
@@ -53,7 +55,8 @@ async function getUserById(userId) {
 
     return user;
   } catch (error) {
-      throw error;
+    console.error(error);  
+    throw error;
   }
 }
 
@@ -67,7 +70,8 @@ async function getUserByUsername(userName) {
 
       return user;
   } catch (error) {
-      throw error;
+    console.error(error);  
+    throw error;
   }
 }
 

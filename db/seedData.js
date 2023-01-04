@@ -1,3 +1,14 @@
+//  console.log("Calling updateRoutine on routines");
+  // console.log(routines[1].id);
+  // const updateRoutinesResult = await updateRoutine(routines[1].id, {
+  //       name: "Big Boy Routine", 
+  //       goal: "To get swole!",
+  //       });
+  // console.log("Result:", updateRoutinesResult);
+
+
+
+
 // require in the database adapter functions as you write them (createUser, createActivity...)
 // const { } = require('./');
 const client = require("./client");
@@ -27,6 +38,9 @@ const {
   updateRoutine,
   destroyRoutine,
 } = require("./routines");
+const {
+  addActivityToRoutine,
+} = require('./routine_activities');
 
 async function dropTables() {
   try {
@@ -173,7 +187,7 @@ async function createInitialRoutines() {
     routinesToCreate.map((routine) => createRoutine(routine))
   )
   console.log("Routines Created: ", routines)
-  console.log("Finished creating routines.")
+  console.log("Finished creating routines.")  
 }
 
 async function createInitialRoutineActivities() {
@@ -245,6 +259,10 @@ async function createInitialRoutineActivities() {
   console.log("routine_activities created: ", routineActivities)
   console.log("Finished creating routine_activities!")
 }
+
+// Here
+
+
 
 async function rebuildDB() {
   try {

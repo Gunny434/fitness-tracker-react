@@ -10,7 +10,8 @@ async function createRoutine({ creatorId, isPublic, name, goal }) {
 
     return routine;
   } catch (error) {
-      throw error;
+    console.error(error);  
+    throw error;
   }
 }
 
@@ -30,11 +31,24 @@ async function getRoutineById(id) {
     }
     return routine;
   } catch (error) {
-      throw error;
+    console.error(error);  
+    throw error;
   }
 }
 
-async function getRoutinesWithoutActivities() {}
+async function getRoutinesWithoutActivities() {
+  try {
+    const {rows: routines} = await client.query(`
+      SELECT * FROM routines;
+    `)
+    // console.log('this is routines in getroutineswihtoutactivities', routines);
+    return routines;
+    
+  } catch (error) { 
+    console.error(error);  
+    throw error;
+  }
+}
 
 async function getAllRoutines() {}
 
@@ -46,7 +60,32 @@ async function getPublicRoutinesByUser({ username }) {}
 
 async function getPublicRoutinesByActivity({ id }) {}
 
-async function updateRoutine({ id, ...fields }) {}
+async function updateRoutine( id, fields = {} ) {
+  const keys = Object.keys(fields);
+  console.log(keys)
+  console.log(Object.values(fields));
+
+  const setString = keys.map(
+    (key, index) => `${key}=$${index + 1}`
+  ).join(', ');
+  
+  console.log(setString)
+  try { 
+    if (setString.length > 0) {
+      const {rows: [updatedRoutine]} = await client.query (`
+      UPDATE routines
+      SET ${setString}
+      WHERE id=${id}
+      RETURNING *;
+      `, Object.values(fields));
+
+      return updatedRoutine;
+    }
+
+  }  catch (error) {
+  console.error(error)
+  throw error
+ }}
 
 async function destroyRoutine(id) {}
 
