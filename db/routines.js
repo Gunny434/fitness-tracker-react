@@ -95,9 +95,42 @@ try {
 
 }
 
-async function getAllRoutinesByUser({ username }) {}
+async function getAllRoutinesByUser({ username }) {
+  
+  try {
+    const allRoutines = await getAllRoutines();
+  
+  const userRoutines = allRoutines.filter(
+  (routine) => routine.creatorName === username
+  )
+  console.log('this is all routines', userRoutines);
+  return userRoutines;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
-async function getPublicRoutinesByUser({ username }) {}
+async function getPublicRoutinesByUser({ username }) {
+  try {
+    const allRoutines = await getAllRoutines();
+  
+  const userRoutines = allRoutines.filter(
+  (routine) => routine.creatorName === username
+  )
+
+  const publicUserRoutines = userRoutines.filter(
+    (routine) => routine.isPublic
+    )
+
+  console.log('this is all routines', publicUserRoutines);
+  return publicUserRoutines;
+  
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 async function getPublicRoutinesByActivity({ id }) {}
 
