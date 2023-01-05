@@ -1,4 +1,5 @@
 const client = require("./client");
+const {attachActivitiesToRoutines} = require('./activities');
 
 async function createRoutine({ creatorId, isPublic, name, goal }) {
   try {
@@ -63,6 +64,7 @@ async function getAllRoutines() {
       JOIN routine_activities ON routine_activities."activityId" = activities.id;
     `);
 
+    // for each entry in routines, we want to look through th activities array and filter it where each activity.routineId matches routine.Id, and then add those activities to the routine you are looking at, then return the completed routines array with the added activities
     for (const routine of routines) {
       const activitiesToAdd = activities.filter(
         (activity) => activity.routineId === routine.id
@@ -70,7 +72,8 @@ async function getAllRoutines() {
 
       routine.activities = activitiesToAdd;
     }
-
+// console.log('this is routines in getallroutines ----------->', routines);
+// console.log(routines[0].activities);
     return routines;
   } catch (error) {
     console.error(error);
@@ -87,6 +90,7 @@ try {
 )
 
   console.log('this is all routines', publicRoutines);
+  // console.log(publicRoutines[0].activities);
   return publicRoutines
 } catch (error) {
   console.error(error);
@@ -123,16 +127,56 @@ async function getPublicRoutinesByUser({ username }) {
     (routine) => routine.isPublic
     )
 
-  console.log('this is all routines', publicUserRoutines);
+  // console.log('this is all routines', publicUserRoutines[0].activities);
   return publicUserRoutines;
-  
+
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
 
-async function getPublicRoutinesByActivity({ id }) {}
+
+
+async function getPublicRoutinesByActivity({ id }) {
+  // pull of the activityId from an activity object
+  //maybe we want to take the activity ID, match it to the routine ID in routines_activities, and then return the routine based on the routine ID activty it is aligned to
+
+  try {
+    // select everything from routines, 
+    const {rows: routines} = await client.query(`
+      SELECT routines.*, users.username AS "creatorName"
+      FROM routines
+      JOIN users ON routines."creatorId" = users.id
+      JOIN routine_activities ON routine_activities."routineId" = routines.id
+      WHERE routines."isPublic" = true AND routine_activities."activityId" = $1;
+    `, [id]);
+    
+    return attachActivitiesToRoutines(routines);
+//     const {rows: activities} = await client.query(`
+//       SELECT activities.*, routine_activities.id AS "routineActivityId", routine_activities."routineId", routine_activities.duration, routine_activities.count
+//       FROM activities
+//       JOIN routine_activities ON routine_activities."activityId" = activities.id;
+//     `);
+
+//     // for each entry in routines, we want to look through th activities array and filter it where each activity.routineId matches routine.Id, and then add those activities to the routine you are looking at, then return the completed routines array with the added activities
+//     for (const routine of routines) {
+//       const activitiesToAdd = activities.filter(
+//         (activity) => activity.routineId === routine.id
+//       );
+
+//       routine.activities = activitiesToAdd;
+//     }
+// // console.log('this is routines in getallroutines ----------->', routines);
+// // console.log(routines[0].activities);
+//     return routines;
+    
+
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 async function updateRoutine( id, fields = {} ) {
   const keys = Object.keys(fields);
