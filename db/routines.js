@@ -41,10 +41,9 @@ async function getRoutinesWithoutActivities() {
   try {
     const {rows: routines} = await client.query(`
       SELECT * FROM routines;
-    `)
+    `);
     // console.log('this is routines in getroutineswihtoutactivities', routines);
     return routines;
-    
   } catch (error) { 
     console.error(error);  
     throw error;
@@ -72,8 +71,8 @@ async function getAllRoutines() {
 
       routine.activities = activitiesToAdd;
     }
-// console.log('this is routines in getallroutines ----------->', routines);
-// console.log(routines[0].activities);
+    // console.log('this is routines in getallroutines ----------->', routines);
+    // console.log(routines[0].activities);
     return routines;
   } catch (error) {
     console.error(error);
@@ -82,21 +81,20 @@ async function getAllRoutines() {
 }
 
 async function getAllPublicRoutines() {
-try {
-  const allRoutines = await getAllRoutines();
-  
-  const publicRoutines = allRoutines.filter(
-  (routine) => routine.isPublic
-)
+  try {
+    const allRoutines = await getAllRoutines();
+    
+    const publicRoutines = allRoutines.filter(
+      (routine) => routine.isPublic
+    )
 
-  console.log('this is all routines', publicRoutines);
-  // console.log(publicRoutines[0].activities);
-  return publicRoutines
-} catch (error) {
-  console.error(error);
-  throw error
-}
-
+    // console.log('this is all routines', publicRoutines);
+    // console.log(publicRoutines[0].activities);
+    return publicRoutines;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 async function getAllRoutinesByUser({ username }) {
@@ -104,11 +102,11 @@ async function getAllRoutinesByUser({ username }) {
   try {
     const allRoutines = await getAllRoutines();
   
-  const userRoutines = allRoutines.filter(
-  (routine) => routine.creatorName === username
-  )
-  console.log('this is all routines', userRoutines);
-  return userRoutines;
+    const userRoutines = allRoutines.filter(
+      (routine) => routine.creatorName === username
+    );
+    // console.log('this is all routines', userRoutines);
+    return userRoutines;
   } catch (error) {
     console.error(error);
     throw error;
@@ -119,24 +117,21 @@ async function getPublicRoutinesByUser({ username }) {
   try {
     const allRoutines = await getAllRoutines();
   
-  const userRoutines = allRoutines.filter(
-  (routine) => routine.creatorName === username
-  )
+    const userRoutines = allRoutines.filter(
+      (routine) => routine.creatorName === username
+    );
 
-  const publicUserRoutines = userRoutines.filter(
-    (routine) => routine.isPublic
-    )
+    const publicUserRoutines = userRoutines.filter(
+      (routine) => routine.isPublic
+    );
 
-  // console.log('this is all routines', publicUserRoutines[0].activities);
-  return publicUserRoutines;
-
+    // console.log('this is all routines', publicUserRoutines[0].activities);
+    return publicUserRoutines;
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
-
-
 
 async function getPublicRoutinesByActivity({ id }) {
   // pull of the activityId from an activity object
@@ -153,24 +148,32 @@ async function getPublicRoutinesByActivity({ id }) {
     `, [id]);
     
     return attachActivitiesToRoutines(routines);
-//     const {rows: activities} = await client.query(`
-//       SELECT activities.*, routine_activities.id AS "routineActivityId", routine_activities."routineId", routine_activities.duration, routine_activities.count
-//       FROM activities
-//       JOIN routine_activities ON routine_activities."activityId" = activities.id;
-//     `);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
-//     // for each entry in routines, we want to look through th activities array and filter it where each activity.routineId matches routine.Id, and then add those activities to the routine you are looking at, then return the completed routines array with the added activities
-//     for (const routine of routines) {
-//       const activitiesToAdd = activities.filter(
-//         (activity) => activity.routineId === routine.id
-//       );
+async function updateRoutine({ id, ...fields}) {
+  const keys = Object.keys(fields);
 
-//       routine.activities = activitiesToAdd;
-//     }
-// // console.log('this is routines in getallroutines ----------->', routines);
-// // console.log(routines[0].activities);
-//     return routines;
-    
+  const setString = keys.map(
+    (key, index) => `"${key}"=$${index + 1}`
+  ).join(', ');
+  
+  try { 
+    if (setString.length > 0) {
+      const {rows: [updatedRoutine]} = await client.query (`
+        UPDATE routines
+        SET ${setString}
+        WHERE id=${id}
+        RETURNING *;
+      `, Object.values(fields));
+
+      return updatedRoutine;
+    } else {
+      return null;
+    }
 
   } catch (error) {
     console.error(error);
@@ -178,34 +181,22 @@ async function getPublicRoutinesByActivity({ id }) {
   }
 }
 
-async function updateRoutine( id, fields = {} ) {
-  const keys = Object.keys(fields);
-  console.log(keys)
-  console.log(Object.values(fields));
-
-  const setString = keys.map(
-    (key, index) => `${key}=$${index + 1}`
-  ).join(', ');
-  
-  console.log(setString)
-  try { 
-    if (setString.length > 0) {
-      const {rows: [updatedRoutine]} = await client.query (`
-      UPDATE routines
-      SET ${setString}
-      WHERE id=${id}
-      RETURNING *;
-      `, Object.values(fields));
-
-      return updatedRoutine;
-    }
-
-  }  catch (error) {
-  console.error(error)
-  throw error
- }}
-
-async function destroyRoutine(id) {}
+async function destroyRoutine(id) {
+  try {
+    await client.query(`
+      DELETE FROM routine_activities
+      WHERE "routineId" = $1;
+    `, [id]);
+    
+    await client.query(`
+      DELETE FROM routines
+      WHERE id = $1;
+    `, [id]);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 module.exports = {
   getRoutineById,
