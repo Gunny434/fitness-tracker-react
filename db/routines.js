@@ -73,12 +73,27 @@ async function getAllRoutines() {
 
     return routines;
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     throw error;
   }
 }
 
-async function getAllPublicRoutines() {}
+async function getAllPublicRoutines() {
+try {
+  const allRoutines = await getAllRoutines();
+  
+  const publicRoutines = allRoutines.filter(
+  (routine) => routine.isPublic
+)
+
+  console.log('this is all routines', publicRoutines);
+  return publicRoutines
+} catch (error) {
+  console.error(error);
+  throw error
+}
+
+}
 
 async function getAllRoutinesByUser({ username }) {}
 
