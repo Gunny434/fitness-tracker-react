@@ -3,6 +3,7 @@ const router = express.Router();
 
 // GET /api/health
 router.get('/health', async (req, res, next) => {
+    console.log("All quiet on the western front.");
 });
 
 // ROUTER: /api/users
@@ -20,5 +21,18 @@ router.use('/routines', routinesRouter);
 // ROUTER: /api/routine_activities
 const routineActivitiesRouter = require('./routineActivities');
 router.use('/routine_activities', routineActivitiesRouter);
+
+// router.use('*', (req, res, next) => {
+//     res.send({
+
+//     })
+// });
+
+router.use((error, req, res, next) => {
+    res.send({
+        name: error.name,
+        message: error.message
+    });
+});
 
 module.exports = router;
