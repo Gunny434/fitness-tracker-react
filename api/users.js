@@ -1,12 +1,19 @@
 /* eslint-disable no-useless-catch */
 const express = require("express");
 const usersRouter = express.Router();
+
 const { createUser, getUserByUsername, getUser } = require('../db/users');
 const {requireUser} = require('./utils');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
 const bcrypt = require('bcrypt');
 const { getAllRoutinesByUser, getPublicRoutinesByUser } = require("../db");
+
+usersRouter.use((req, res, next) => {
+    console.log("A request is being made to /users.");
+
+    next();
+});
 
 // POST /api/users/register
 usersRouter.post('/register', async (req, res, next) => {
@@ -116,8 +123,8 @@ usersRouter.get('/me', requireUser, async (req, res, next) => {
 
 // GET /api/users/:username/routines
 usersRouter.get('/:username/routines', requireUser, async (req, res, next) => {
-    console.log("/:username/routines request params/user:", req.params, req.user);
-    console.log("/:username/routines conditional check:", req.user.username === req.params.username);
+    // console.log("/:username/routines request params/user:", req.params, req.user);
+    // console.log("/:username/routines conditional check:", req.user.username === req.params.username);
     try {
         // const userRoutines = await getAllRoutinesByUser(req.params);
         // console.log("/:username/routines userRoutines:", userRoutines);
@@ -144,8 +151,13 @@ usersRouter.get('/:username/routines', requireUser, async (req, res, next) => {
         }
     } catch ({ name, message }) {
         next({ name, message });
-    }
-    
+    } 
 })
+
+usersRouter.use((req, res, next) => {
+    console.log("Now leaving /users.");
+
+    next();
+});
 
 module.exports = usersRouter;
