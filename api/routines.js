@@ -64,24 +64,27 @@ routinesRouter.patch("/:routineId", requireUser, async (req, res, next) => {
 
 // DELETE /api/routines/:routineId
 routinesRouter.delete("/:routineId", requireUser, async (req, res, next) => {
+    // take routineID and user off the request 
     const { routineId } = req.params;
     const activeUser = {...req.user};
+    //take the routineID and go grab it from the DB based on that
+    const routineToDelete = await getRoutineById(routineId);
 
     try {
-        const routineToDelete = await getRoutineById(routineId);
-        const deletedRoutine = {...routineToDelete};
-        if (routineToDelete.creatorId === activeUser.id) {
+        // with the routine we grabbed, see if it matches the userID from the request MEANING if true they are the owner of the routine and have permissions to delete it 
+        if (routineToDelete && routineToDelete.creatorId === activeUser.id) {
             const deletedRoutine = await destroyRoutine(routineId);
-            console.log("/:routineId routineToDelete:", routineToDelete)
-            res.send(deletedRoutine);
+            // console.log("/:routineId routineToDelete:", routineToDelete)
+            res.send(deletedRoutine) 
         } else {
             res.status(403);
             next({
                 error: "403",
                 name: "UnauthorizedUserError",
-                message: `User ${activeUser.username} is not allowed to update ${routineToDelete.name}`
+                message: `User ${activeUser.username} is not allowed to delete ${routineToDelete.name}`
             });
         }
+
     } catch ({ name, message }) {
         next({ name, message });
     }

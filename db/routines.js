@@ -24,12 +24,12 @@ async function getRoutineById(id) {
         WHERE id=$1
     `, [id]);
 
-    if (!routine) {
-        throw {
-            name: "RoutineNotFoundError",
-            message: "Could not find a routine with that ID."
-        };
-    }
+    // if (!routine) {
+    //     throw {
+    //         name: "RoutineNotFoundError",
+    //         message: "Could not find a routine with that ID."
+    //     };
+    // }
     return routine;
   } catch (error) {
     console.error(error);  
@@ -188,10 +188,12 @@ async function destroyRoutine(id) {
       WHERE "routineId" = $1;
     `, [id]);
     
-    await client.query(`
+    const {rows: [deletedRoutine]} = await client.query(`
       DELETE FROM routines
-      WHERE id = $1;
+      WHERE id = $1
+      RETURNING *;
     `, [id]);
+    return deletedRoutine;
   } catch (error) {
     console.error(error);
     throw error;
