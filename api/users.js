@@ -6,6 +6,7 @@ const {requireUser} = require('./utils');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
 const bcrypt = require('bcrypt');
+const { getAllRoutinesByUser, getPublicRoutinesByUser } = require("../db");
 
 // POST /api/users/register
 usersRouter.post('/register', async (req, res, next) => {
@@ -15,18 +16,15 @@ usersRouter.post('/register', async (req, res, next) => {
 
     try {
         const _user = await getUserByUsername(username);
-console.log('this is _user--------------->', _user);
         if (_user) {
             res.status(401);
             next({
-                error: 'error',
                 name: 'UserExistsError',
                 message: `User ${username} is already taken.`
             });
         } else if (password.length < 8) {
             res.status(401);
             next({
-                error: 'error',
                 name: "PasswordLengthError",
                 message: "Password Too Short!"
             });
@@ -66,7 +64,7 @@ console.log('this is _user--------------->', _user);
 usersRouter.post('/login', async (req, res, next) => {
     const {username, password} = req.body;
     
-// if no username or password provided, send error
+    // if no username or password provided, send error
     if (!username || !password) {
         next({
           name: "MissingCredentialsError",
@@ -103,9 +101,7 @@ usersRouter.post('/login', async (req, res, next) => {
 
 // GET /api/users/me
 usersRouter.get('/me', requireUser, async (req, res, next) => {
-    // console.log('this is req.body----------->',req.body);
-    // console.log('this is req.user----------->',req.user);
-    const {username} = req.body;
+    const { username } = req.body;
 
     try {
         const user = await getUserByUsername(username);
@@ -117,16 +113,42 @@ usersRouter.get('/me', requireUser, async (req, res, next) => {
             next(error);
     }
 })
+
 // GET /api/users/:username/routines
+usersRouter.get('/:username/routines', requireUser, async (req, res, next) => {
+    console.log("/:username/routines request params/user:", req.params, req.user);
 
+    // const routeUser = req.params.username;
+    // const {activeUser} = req.user;
 
+    console.log("/:username/routines conditional check:", req.user.username === req.params.username);
 
-// usersRouter.use((error, req, res, next) => {
-//     res.send({
-//         error: error.error,
-//         name: error.name,
-//         message: error.message
-//     })
-// })
+    // const { rows: routines } = await getAllRoutinesByUser(routeUser);
+    // console.log(routines);
+    try {
+        const userRoutines = await getAllRoutinesByUser(req.params);
+        console.log("/:username/routines userRoutines:", userRoutines);
+        const publicUserRoutines = userRoutines.filter(
+            (routine) => routine.isPublic
+          );
+        console.log("/:username/routines publicUserRoutines:", publicUserRoutines);
+        return publicUserRoutines;
+        // if (req.user && req.user.username === req.params.username) {
+        //     const { rows } = await getAllRoutinesByUser(routeUser);
+        //     return routines;
+        // } else if (routeUser) {
+        //     const { rows } = await getPublicRoutinesByUser(routeUser);
+        //     return routines;
+        // } else {
+        //     next({
+        //         name: "UserNotFoundError",
+        //         message: "Could not find that username. Check spelling and try again."
+        //     });
+        // }
+    } catch ({ name, message }) {
+        next({ name, message });
+    }
+    
+})
 
 module.exports = usersRouter;
