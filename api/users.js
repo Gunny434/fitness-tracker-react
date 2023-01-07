@@ -117,34 +117,31 @@ usersRouter.get('/me', requireUser, async (req, res, next) => {
 // GET /api/users/:username/routines
 usersRouter.get('/:username/routines', requireUser, async (req, res, next) => {
     console.log("/:username/routines request params/user:", req.params, req.user);
-
-    // const routeUser = req.params.username;
-    // const {activeUser} = req.user;
-
     console.log("/:username/routines conditional check:", req.user.username === req.params.username);
-
-    // const { rows: routines } = await getAllRoutinesByUser(routeUser);
-    // console.log(routines);
     try {
-        const userRoutines = await getAllRoutinesByUser(req.params);
-        console.log("/:username/routines userRoutines:", userRoutines);
-        const publicUserRoutines = userRoutines.filter(
-            (routine) => routine.isPublic
-          );
-        console.log("/:username/routines publicUserRoutines:", publicUserRoutines);
-        return publicUserRoutines;
-        // if (req.user && req.user.username === req.params.username) {
-        //     const { rows } = await getAllRoutinesByUser(routeUser);
-        //     return routines;
-        // } else if (routeUser) {
-        //     const { rows } = await getPublicRoutinesByUser(routeUser);
-        //     return routines;
-        // } else {
-        //     next({
-        //         name: "UserNotFoundError",
-        //         message: "Could not find that username. Check spelling and try again."
-        //     });
-        // }
+        // const userRoutines = await getAllRoutinesByUser(req.params);
+        // console.log("/:username/routines userRoutines:", userRoutines);
+        // const publicUserRoutines = userRoutines.filter(
+        //     (routine) => routine.isPublic
+        // );
+        // console.log("/:username/routines publicUserRoutines:", publicUserRoutines);
+        // res.send(publicUserRoutines);
+
+        if (req.user && (req.user.username === req.params.username)) {
+            const userRoutines = await getAllRoutinesByUser(req.params);
+            res.send(userRoutines);
+        } else if (req.params.username) {
+            const userRoutines = await getAllRoutinesByUser(req.params);
+            const publicUserRoutines = userRoutines.filter(
+                (routine) => routine.isPublic
+            );
+            res.send(publicUserRoutines);
+        } else {
+            next({
+                name: "UserNotFoundError",
+                message: "Could not find that username. Check spelling and try again."
+            });
+        }
     } catch ({ name, message }) {
         next({ name, message });
     }
