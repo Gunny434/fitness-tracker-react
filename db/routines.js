@@ -63,7 +63,7 @@ async function getAllRoutines() {
       JOIN routine_activities ON routine_activities."activityId" = activities.id;
     `);
 
-    // for each entry in routines, we want to look through th activities array and filter it where each activity.routineId matches routine.Id, and then add those activities to the routine you are looking at, then return the completed routines array with the added activities
+    // for of means for each entry(routine) in routines array, we want to look through th activities array and filter it where each activity.routineId matches routine.Id, and then add those activities to the routine you are looking at, then return the completed routines array with the added activities
     for (const routine of routines) {
       const activitiesToAdd = activities.filter(
         (activity) => activity.routineId === routine.id

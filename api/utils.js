@@ -7,7 +7,7 @@ function requireUser(req, res, next) {
         message: "You must be logged in to perform this action"
       });
     } else {
-      console.log("requireUser successful, moving to next step.");
+      // console.log("requireUser successful, moving to next step.");
       next();
     }
   }

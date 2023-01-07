@@ -7,7 +7,8 @@ const {
     createRoutine, 
     updateRoutine, 
     getRoutineById,
-    destroyRoutine
+    destroyRoutine,
+    attachActivitiesToRoutines
 } = require('../db');
 
 routinesRouter.use((req, res, next) => {
@@ -64,6 +65,7 @@ routinesRouter.patch("/:routineId", requireUser, async (req, res, next) => {
 
 // DELETE /api/routines/:routineId
 routinesRouter.delete("/:routineId", requireUser, async (req, res, next) => {
+    
     // take routineID and user off the request 
     const { routineId } = req.params;
     const activeUser = {...req.user};
@@ -91,6 +93,36 @@ routinesRouter.delete("/:routineId", requireUser, async (req, res, next) => {
 })
 
 // POST /api/routines/:routineId/activities
+// want to get the routine to add activity by ID, then take the activity info provided in the request and attach it to that routine, then send back 
+
+
+routinesRouter.post("/:routineId/activities", async (req, res, next) => {
+    const { routineId }= req.params;
+    const activityToAdd = req.body;
+    const routineToAddActivity = await getRoutineById(routineId);
+    console.log('routine to add to------------------', routineToAddActivity);
+    console.log('activity to add------------------', activityToAdd);
+
+    try {
+        // if the activity already exists on routine, then can't add duplicate activity. 
+        //so we look at current routine, loop through the activities array and if any individual activty.id === activitytoadd.id then its duplicate
+        if (routineToAddActivity) {
+            routineToAddActivity.activities = activityToAdd;
+            // console.log('------------------', routineToAddActivity);
+            console.log('routine with activites------------------', routineToAddActivity);
+            res.send(routineToAddActivity.activities);
+        } else {
+            res.send({
+                error: "error",
+                name: "DuplicateActivityError",
+                message: `${activityToAdd.id} already exists in ${routineToAddActivity.id}`
+            })
+        }
+
+    } catch ({ name, message }) {
+        next({ name, message });
+    }
+}); 
 
 routinesRouter.use((req, res, next) => {
     console.log("Now leaving /routines.");
