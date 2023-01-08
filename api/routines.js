@@ -8,7 +8,9 @@ const {
     updateRoutine, 
     getRoutineById,
     destroyRoutine,
-    attachActivitiesToRoutines
+    attachActivitiesToRoutines,
+    getRoutineActivitiesByRoutine,
+    addActivityToRoutine
 } = require('../db');
 
 routinesRouter.use((req, res, next) => {
@@ -94,31 +96,19 @@ routinesRouter.delete("/:routineId", requireUser, async (req, res, next) => {
 
 // POST /api/routines/:routineId/activities
 // want to get the routine to add activity by ID, then take the activity info provided in the request and attach it to that routine, then send back 
-
-
 routinesRouter.post("/:routineId/activities", async (req, res, next) => {
-    const { routineId }= req.params;
-    const activityToAdd = req.body;
-    const routineToAddActivity = await getRoutineById(routineId);
-    console.log('routine to add to------------------', routineToAddActivity);
-    console.log('activity to add------------------', activityToAdd);
+    const activityFields = {...req.body};
 
     try {
-        // if the activity already exists on routine, then can't add duplicate activity. 
-        //so we look at current routine, loop through the activities array and if any individual activty.id === activitytoadd.id then its duplicate
-        if (routineToAddActivity) {
-            routineToAddActivity.activities = activityToAdd;
-            // console.log('------------------', routineToAddActivity);
-            console.log('routine with activites------------------', routineToAddActivity);
-            res.send(routineToAddActivity.activities);
+        const newActivity = await addActivityToRoutine(activityFields);
+        if (newActivity) {
+            res.send(newActivity);
         } else {
-            res.send({
-                error: "error",
+            next({
                 name: "DuplicateActivityError",
-                message: `${activityToAdd.id} already exists in ${routineToAddActivity.id}`
+                message: `Activity ID ${activityFields.activityId} already exists in Routine ID ${activityFields.routineId}`
             })
         }
-
     } catch ({ name, message }) {
         next({ name, message });
     }

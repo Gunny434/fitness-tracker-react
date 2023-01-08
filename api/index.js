@@ -50,7 +50,11 @@ router.use((req, res, next) => {
 
 // GET /api/health
 router.get('/health', async (req, res, next) => {
-    console.log("All quiet on the western front.");
+    try {
+        res.send(200, "All quiet on the western front.");
+    } catch ({ name, message }) {
+        next({ name, message });
+    }
 });
 
 // ROUTER: /api/users
