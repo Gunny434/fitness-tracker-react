@@ -51,7 +51,7 @@ router.use((req, res, next) => {
 // GET /api/health
 router.get('/health', async (req, res, next) => {
     try {
-        res.send(200, "All quiet on the western front.");
+        res.send(200, {message: "All quiet on the western front."});
     } catch ({ name, message }) {
         next({ name, message });
     }
