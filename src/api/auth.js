@@ -3,23 +3,19 @@ const cohort = '2211-ftb-et-web-ft';
 export const registerUser = async (username, password) => {
     try {
         const response = await fetch(
-            `'http://fitnesstrac-kr.herokuapp.com/api/users/register`,
+            `http://fitnesstrac-kr.herokuapp.com/api/users/register`,
             {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    user: {
                         username,
                         password,
-                    },
                 }),
             }
-        );
-        const {
-            data: { token },
-        } = await response.json();
+        )
+        const {token} = await response.json();
         return token;
     } catch (error) {
         console.error(error);
@@ -35,15 +31,12 @@ export const login = async (username, password) => {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              user: {
                 username,
                 password
-              }
             })
           });
-        const {
-            data: { token },
-        } = await response.json();
+        const {token} = await response.json();
+        console.log(token)
         return token;
     } catch (error) {
         console.error(error);

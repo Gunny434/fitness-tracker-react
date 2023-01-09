@@ -8,6 +8,7 @@ const Register = ({setToken}) => {
     const [password, setPassword] = useState("");
     const [passwordAuth, setPasswordAuth] = useState("");
     const [passwordError, setPasswordError] = useState("");
+
     return (
         <div className="register-bar">
             <form
@@ -17,6 +18,7 @@ const Register = ({setToken}) => {
                         e.preventDefault();
                         console.log(password, username);
                         const token = await registerUser(username, password);
+                        if (token) {
                         setToken(token);
                         console.log(token);
                         localStorage.setItem("token", token);
@@ -24,6 +26,10 @@ const Register = ({setToken}) => {
                         setPassword("");
                         setPasswordAuth("");
                         setPasswordError("");
+                        } else {
+                            e.preventDefault();
+                            setPasswordError("token not returned from registerUser")
+                        }
                     } else {
                         e.preventDefault();
                         setPasswordError("Error: Passwords do not match.")
