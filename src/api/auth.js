@@ -60,3 +60,21 @@ export const getUserId = async (token) => {
         console.error(error);
     }
 };
+
+// this calls the api, returns array of public routines
+export const getPublicRoutines = async (setRoutines) => {
+    
+    try {const response = await fetch('http://fitnesstrac-kr.herokuapp.com/api/routines', {
+        headers: {
+          'Content-Type': 'application/json',
+        }, 
+      })
+      const routines = await response.json();
+      setRoutines(routines);
+
+    } catch (error) {
+        console.error(error);
+    }};
+
+
+         

@@ -12,9 +12,12 @@ const Navbar = ({token}) => {
         { !token &&
         <NavLink to='/register'>Register</NavLink>
         }
-        {/* { token &&
+        <NavLink to='/routines'>Exercise Routines</NavLink>
+
+        <NavLink to='/activities'>Workout Activities</NavLink>
+        { token &&
         <NavLink to='/myroutines'>My Routines</NavLink>
-        } */}
+        }
 
         </nav>
     </div>
