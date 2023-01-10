@@ -8,9 +8,10 @@ import Register from "./Components/RegisterUser";
 import LogMeIn from "./Components/LogMeIn";
 import Navbar from "./Pages/Navbar";
 import Routines from "./Pages/Routines";
+import Activities from "./Pages/Activities";
 
 function App() {
-    const [routines, setRoutines] = useState(null);
+    const [routines, setRoutines] = useState([]);
     const [activities, setActivities] = useState([]);
     const [token, setToken] = useState(null);
     const [userId, setUserId] = useState('');
@@ -23,8 +24,6 @@ function App() {
         setUserId(localStorage.userID);
     };
 
-    
-
     return (
         <div className="App">
             <h1>Under Construction, Come Back Soon...</h1>
@@ -32,12 +31,13 @@ function App() {
             <Navbar token={ token }/>
             <Routes>
                 <Route path='/' 
-                element={<Home 
-                token={ token } 
-                routines={ routines } 
-                setRoutines={ setRoutines }
-                userId={ userId }
-                setToken={ setToken }/>} 
+                    element={<Home 
+                        token={ token } 
+                        routines={ routines } 
+                        setRoutines={ setRoutines }
+                        userId={ userId }
+                        setToken={ setToken }/>
+                    } 
                 />
                 {!token &&
                     <Route path='/register' element={ <Register setToken={ setToken } /> }/>
@@ -46,7 +46,7 @@ function App() {
                     <Route path='/login' element={ <LogMeIn setToken={ setToken } setUserId={ setUserId } /> } />
                 }
                 <Route path='/routines' element={ <Routines token={ token } setToken={ setToken } routines={ routines } setRoutines={ setRoutines } /> }/>
-                <Route path='/activities' />
+                <Route path='/activities' element={ <Activities token={ token } setToken={ setToken } activities={ activities } setActivities={ setActivities } /> }/>
                 <Route path='/myroutines' />
 
                 <Route path='*' element={<Navigate replace to='/' />} />
