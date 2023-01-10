@@ -43,17 +43,14 @@ export const login = async (username, password) => {
 
 export const getUserId = async (token) => {
     try {
-        const var1 = await fetch('http://fitnesstrac-kr.herokuapp.com/api/users/me', {
+        const response = await fetch('http://fitnesstrac-kr.herokuapp.com/api/users/me', {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
             },
           })
-        const var2 = await var1.json();
-        console.log(var2.data.posts);
-        console.log(var2.data.messages);
-        console.log(var2.data._id);
-        return var2.data._id;
+        const result = await response.json();
+        return result.username;
     } catch (error) {
         console.error(error);
     }
@@ -92,3 +89,18 @@ export const submitActivity = async (name, description, token) => {
         console.error(error);
     }
 }
+
+export const getMyRoutines = async (username, token) => {
+    try {
+        const response = await fetch(`http://fitnesstrac-kr.herokuapp.com/api/users/${username}/routines`, {
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+            },
+        });
+        const routines = await response.json();
+        return routines;
+    } catch (error) {
+        console.error(error);
+    }
+};
