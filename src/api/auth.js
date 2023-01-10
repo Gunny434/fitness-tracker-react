@@ -104,3 +104,23 @@ export const getMyRoutines = async (username, token) => {
         console.error(error);
     }
 };
+
+export const submitRoutine = async (name, goal, isPublic, token) => {
+    try {
+        const response = await fetch('http://fitnesstrac-kr.herokuapp.com/api/routines', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+            body: JSON.stringify({
+              name: `${name}`,
+              goal: `${goal}`,
+              isPublic: `${isPublic}`
+            })
+          }).then(response => response.json())
+        return response;
+    } catch (error) {
+        console.error(error);
+    }
+}

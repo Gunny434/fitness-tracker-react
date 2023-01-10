@@ -5,6 +5,7 @@ import LogMeOut from "../Components/LogMeOut";
 import AddActivity from "../Components/AddActivity";
 import AllActivities from "../Components/AllActivities";
 import AllMyRoutines from "../Components/AllMyRoutines";
+import AddRoutine from "../Components/AddRoutine";
 
 const MyRoutines = ({token, setToken, activities, setActivities, routines, setRoutines, userId}) => {
     return (
@@ -16,9 +17,9 @@ const MyRoutines = ({token, setToken, activities, setActivities, routines, setRo
         }
         
         
-        {/* <h2>Create New Routine:</h2>
+        <h2>Create New Routine:</h2>
           <AddRoutine token={ token } routines={ routines } setRoutines={ setRoutines } />
-         */}
+        
         <h1>All My Routines:</h1>
           <AllMyRoutines token={ token } routines={ routines } setRoutines={ setRoutines } activities={ activities } setActivities={ setActivities } userId={ userId }/>
 

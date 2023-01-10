@@ -39,7 +39,7 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
                             <p>Creator: {routine.creatorName}</p>
                             <div className="routineActivitiesHolder">
                                 <h3>Activities:</h3>
-                                {routine.activities.map((activity) => {
+                                {routine.activities?.map((activity) => {
                                     return (
                                         <div className="singleActivityInRoutine" key={activity.id}>
                                             <h4>{activity.name}</h4>
