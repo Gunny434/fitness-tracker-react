@@ -1,9 +1,5 @@
-// import PostView from "../Components/PostView";
-// import MessageView from "../Components/MessageView";
 import React from "react";
 import LogMeOut from "../Components/LogMeOut";
-import AddActivity from "../Components/AddActivity";
-import AllActivities from "../Components/AllActivities";
 import AllMyRoutines from "../Components/AllMyRoutines";
 import AddRoutine from "../Components/AddRoutine";
 

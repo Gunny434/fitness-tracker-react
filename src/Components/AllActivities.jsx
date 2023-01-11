@@ -1,22 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { getAllActivities } from "../api/auth";
 
 const AllActivities = ({activities, setActivities}) => {
     const [searchTerm, setSearchTerm] = useState('');
     try {
         useEffect(() => {
-            fetch('http://fitnesstrac-kr.herokuapp.com/api/activities', {
-                headers: {
-                'Content-Type': 'application/json',
-                }, 
-            })
-                .then(result => result.json())
-                .then(
-                    (result) => {
-                        setActivities(result);
-                    },
-                (error) => {
-                    console.log(error);
-                }
+            getAllActivities().then(
+                (result) => {setActivities(result)},
+                (error) => {console.log(error)}
             )
         }, []);
     } catch (error) {

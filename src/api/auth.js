@@ -124,3 +124,58 @@ export const submitRoutine = async (name, goal, isPublic, token) => {
         console.error(error);
     }
 }
+
+export const getAllActivities = async () => {
+    try {
+        const response = await fetch('http://fitnesstrac-kr.herokuapp.com/api/activities', {
+            headers: {
+            'Content-Type': 'application/json',
+            },
+        });
+        const activities = await response.json();
+        return activities;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const addActivityToRoutine = async (routineId, activityId, count, duration, token) => {
+    try {
+        const response = await fetch(`http://fitnesstrac-kr.herokuapp.com/api/routines/${routineId}/activities`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+            body: JSON.stringify({
+                activityId: `${activityId}`,
+                count: `${count}`, 
+                duration: `${duration}`
+            })
+        });
+        const newActivity = await response.json();
+        return newActivity;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const editRoutine = async (routineId, name, goal, isPublic, token) => {
+    try {
+        const response = await fetch(`http://fitnesstrac-kr.herokuapp.com/api/routines/${routineId}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+            body: JSON.stringify({
+              name: `${name}`,
+              goal: `${goal}`,
+              isPublic: `${isPublic}`
+            })
+          }).then(response => response.json())
+        return response;
+    } catch (error) {
+        console.error(error);
+    }
+}

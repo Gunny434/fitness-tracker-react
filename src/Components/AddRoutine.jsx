@@ -31,10 +31,13 @@ const AddRoutine = ({token, routines, setRoutines, activities, setActivities}) =
           <br/>
           {/* We are aware that <br/> is bad practice but due to time constraints this is the most convenient option. */}
           <label className="postLabel" htmlFor='goal'>Goal:</label>
-          
           <input className="input" type='text' name='goal' value={goal} onChange={(event) => setGoal(event.target.value)}/>
           <br/>
-          <label className="postLabel" htmlFor='isPublic'>Is Public:</label>
+          <label className="postLabel" htmlFor='isPublic'>Visibility:</label>
+          <select onChange={e => setIsPublic(e.target.value)}>
+            <option value="true">Public</option>
+            <option value="">Private</option>
+          </select>
           <br/>
           <button type='submit'>Submit</button>
         </form>
