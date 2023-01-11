@@ -179,3 +179,53 @@ export const editRoutine = async (routineId, name, goal, isPublic, token) => {
         console.error(error);
     }
 }
+
+export const editActivity = async (routineActivityId, duration, count, token) => {
+    try {
+        const response = await fetch(`http://fitnesstrac-kr.herokuapp.com/api/routine_activities/${routineActivityId}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+            body: JSON.stringify({
+              count: `${count}`,
+              duration: `${duration}`
+            })
+          }).then(response => response.json())
+        return response;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const deleteRoutine = async (routineId, token) => {
+    try {
+        const response = await fetch(`http://fitnesstrac-kr.herokuapp.com/api/routines/${routineId}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              }
+          }).then(response => response.json())
+        return response;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const deleteActivityFromRoutine = async (routineActivityId, token) => {
+    try {
+        const response = await fetch(`http://fitnesstrac-kr.herokuapp.com/api/routine_activities/${routineActivityId}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              }
+          }).then(response => response.json())
+        return response;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
