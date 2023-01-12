@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+
+* {
+    background-color: light rgb(224, 206, 206);
+    box-sizing: border-box;
+    
+}
+
+header {
+    background-color: aquamarine;
+    border-bottom: solid;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0; 
+    position: fixed;
+}
+
+.FTLOGO {
+    font-family: 'Dosis', sans-serif;
+    font-weight: 900;
+    color: rgb(37, 154, 226);
+    margin-top: 3px;
+    font-size: 40px;
+    margin-left: 8px;
+}
+
+
+a {
+   text-align: right;
+    margin: 5px;
+    font-size: larger;
+    background-color: lightgray;
+    border-radius: 6px;
+    padding: 5px;
+    border: solid;
+    color: rgb(37, 154, 226);
+    display: inline-block;
+    font-family: 'Dosis', sans-serif;
+}
+
+a:hover {
+    background-color: rgb(189, 184, 184);
+}
+
+.mainBody {
+    margin-top: 100px;
+    text-align: center;
+}
