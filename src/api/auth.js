@@ -17,6 +17,7 @@ export const registerUser = async (username, password) => {
         return token;
     } catch (error) {
         console.error(error);
+        return `There was a ${error} type error. Please make sure your passwords match and are 8+ characters in length.`
     }
 };
 

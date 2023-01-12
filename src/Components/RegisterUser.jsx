@@ -13,30 +13,34 @@ const Register = ({setToken}) => {
         <div className="register-bar">
             <form
                onSubmit={async (e) => {
-                try {
-                    if (password === passwordAuth) {
-                        e.preventDefault();
-                        console.log(password, username);
-                        const token = await registerUser(username, password);
-                        if (token) {
-                        setToken(token);
-                        console.log(token);
-                        localStorage.setItem("token", token);
-                        setUsername("");
-                        setPassword("");
-                        setPasswordAuth("");
-                        setPasswordError("");
+                if (password.length > 7) {
+                    try {
+                        if (password === passwordAuth) {
+                            e.preventDefault();
+                            console.log(password, username);
+                            const token = await registerUser(username, password);
+                            if (token) {
+                            setToken(token);
+                            console.log(token);
+                            localStorage.setItem("token", token);
+                            setUsername("");
+                            setPassword("");
+                            setPasswordAuth("");
+                            setPasswordError("");
+                            } else {
+                                e.preventDefault();
+                                setPasswordError("Error: Username already exists.")
+                            }
                         } else {
                             e.preventDefault();
-                            setPasswordError("token not returned from registerUser")
+                            setPasswordError("Error: Passwords do not match.")
                         }
-                    } else {
+                    }   catch(error)   {
+                        console.error()
+                    }} else {
                         e.preventDefault();
-                        setPasswordError("Error: Passwords do not match.")
+                        setPasswordError("Error: Password must be at least 8 characters.")
                     }
-                }   catch(error)   {
-                    console.error()
-                }
                }}
             >
                 <label htmlFor="username">New Username: </label>

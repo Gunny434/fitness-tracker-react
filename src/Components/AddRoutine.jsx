@@ -6,6 +6,7 @@ import { submitRoutine } from "../api/auth";
 
 const AddRoutine = ({token, routines, setRoutines, activities, setActivities}) => {
     const [name, setName] = useState('');
+    const [createRoutineError, setCreateRoutineError] = useState('');
     const [goal, setGoal] = useState('');
     const [isPublic, setIsPublic] = useState(false);
     
@@ -16,11 +17,15 @@ const AddRoutine = ({token, routines, setRoutines, activities, setActivities}) =
         goal,
         isPublic,
         token);
-      console.log(submittedRoutine); //Show me what was typed
-      setRoutines([submittedRoutine, ...routines]);
-      setName(''); //clear the field after it's submitted
-      setGoal(''); //clear the field after it's submitted
-      setIsPublic(false); //clear the field after it's submitted
+      if (submittedRoutine) {
+        console.log(submittedRoutine); //Show me what was typed
+        setRoutines([submittedRoutine, ...routines]);
+        setName(''); //clear the field after it's submitted
+        setGoal(''); //clear the field after it's submitted
+        setIsPublic(false); //clear the field after it's submitted
+      } else {
+        setCreateRoutineError('That routine name already exists. Please try again.');
+      }
     };
 
     return (
@@ -35,11 +40,12 @@ const AddRoutine = ({token, routines, setRoutines, activities, setActivities}) =
           <br/>
           <label className="postLabel" htmlFor='isPublic'>Visibility:</label>
           <select onChange={e => setIsPublic(e.target.value)}>
-            <option value="true">Public</option>
             <option value="">Private</option>
+            <option value="true">Public</option>
           </select>
           <br/>
           <button type='submit'>Submit</button>
+          <div className="createRoutineError">{createRoutineError}</div>
         </form>
       </div>
     )

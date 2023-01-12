@@ -60,6 +60,9 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
                                     setDeleteRoutineId(0);
                                     setDeleteActivityId(0);
                                     setEditActivityId(0);
+                                    setNewName(routine.name);
+                                    setNewGoal(routine.goal);
+                                    setNewIsPublic(false);
                                 }}>
                                     <button type="submit">Edit Routine</button>
                                 </form>
@@ -75,8 +78,8 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
                                         setUseEffectSetter(true)
                                     };
                                     setEditRoutineId(0);
-                                    setNewName("");
-                                    setNewGoal("");
+                                    setNewName(routine.name);
+                                    setNewGoal(routine.goal);
                                     setNewIsPublic(false);
                                 }}>
                                     <label className="postLabel" htmlFor='newName'>New Name:</label>
@@ -187,7 +190,7 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
                                     </form>
                                 }
                                 <h3>Activities:</h3>
-                                {routine?.activities.map((activity) => {
+                                {routine?.activities?.map((activity) => {
                                     return (
                                         <div className="singleActivityInRoutine" key={activity.id}>
                                             <h4>{activity.name}</h4>
