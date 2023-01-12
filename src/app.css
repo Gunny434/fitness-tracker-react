@@ -3,6 +3,7 @@
 * {
     background-color: light rgb(224, 206, 206);
     box-sizing: border-box;
+    font-family: 'Dosis', sans-serif;
     
 }
 
@@ -49,3 +50,4 @@ a:hover {
     margin-top: 100px;
     text-align: center;
 }
+

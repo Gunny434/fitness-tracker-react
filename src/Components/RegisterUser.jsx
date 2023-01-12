@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import "./RegisterUser.css";
 
 import { registerUser } from "../api/auth";
 
@@ -11,8 +12,10 @@ const Register = ({setToken}) => {
 
     return (
         <div className="register-bar">
+            <h2>Please register below to create your account!</h2>
             <form
-               onSubmit={async (e) => {
+                className="register-form"
+                onSubmit={async (e) => {
                 if (password.length > 7) {
                     try {
                         if (password === passwordAuth) {

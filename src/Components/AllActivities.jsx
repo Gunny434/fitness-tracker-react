@@ -20,7 +20,6 @@ const AllActivities = ({activities, setActivities}) => {
 
     return (
         <div className="portside">
-            <h3>Placeholder</h3>
             <input
                 className="search"
                 placeholder="Search for Activities by Name..."
@@ -28,7 +27,7 @@ const AllActivities = ({activities, setActivities}) => {
                 type="text"
                 onChange={(e) => setSearchTerm(e.target.value)}
             ></input>
-            <div className="publicRountinesContainer">
+            <div className="publicRoutinesContainer">
                 {filteredActivities.map((activity) => {
                     return (
                         <div className="singleactivity" key={activity.id}>

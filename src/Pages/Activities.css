@@ -1,0 +1,59 @@
+.activities_page {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-around;
+}
+
+.allActivities {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    /* flex-wrap: wrap; */
+}
+
+.singleactivity {
+    border: solid;
+    border-radius: 5px;
+    box-shadow: 2px 3px 5px black;
+    margin: 10px 10px 10px 0px;
+}
+
+.submit-form-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.submitForm {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    justify-content: center;
+    /* border: 1px dashed black; */
+    padding: 5px;
+}
+
+.submitForm input, button, textarea {
+    margin: 0px 5px 5px;
+    padding: 6px;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 25px;
+}
+
+.portside {
+    display: flex;
+    flex-direction: column;
+}
+
+.publicRoutinesContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.singleactivity {
+    padding: 5px;
+    flex: 1 1 300px;
+}

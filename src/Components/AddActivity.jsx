@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { submitActivity } from "../api/auth";
 
+
 const AddActivity = ({token, activities, setActivities}) => {
     const [name, setName] = useState('');
     const [desc, setDesc] = useState('');
@@ -22,11 +23,8 @@ const AddActivity = ({token, activities, setActivities}) => {
         <form className="submitForm" onSubmit={handleSubmit}>
           <label className="postLabel" htmlFor='name'>Activity Name:</label>
           <input className="input" type='text' name='name' value={name} onChange={(event) => setName(event.target.value)} />
-          <br/>
-          {/* We are aware that <br/> is bad practice but due to time constraints this is the most convenient option. */}
           <label className="postLabel" htmlFor='desc'>Description:</label>
-          <input className="input" type='text' name='description' value={desc} onChange={(event) => setDesc(event.target.value)}/>
-          <br/>
+          <textarea className="input" type='text' name='description' value={desc} onChange={(event) => setDesc(event.target.value)}/>
           <button type='submit'>Submit</button>
         </form>
       </div>

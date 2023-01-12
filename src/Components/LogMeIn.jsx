@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { redirect } from "react-router-dom";
+import "./LogMeIn.css";
 
 import { getUserId, login } from "../api/auth";
 
@@ -15,7 +16,9 @@ const LogMeIn = ({setToken, setUserId}) => {
 
     return (
         <div className="login-bar">
+            <h2>If you are an existing user, please login below!</h2>
             <form
+               className="login-form"
                onSubmit={async (e) => {
                 try {
                     e.preventDefault();
