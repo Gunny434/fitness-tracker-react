@@ -18,6 +18,9 @@ const Navbar = ({token}) => {
         { token &&
         <NavLink to='/myroutines'>My Routines</NavLink>
         }
+        { token &&
+        <NavLink to='/logout'>Log Out</NavLink>
+        }
 
         </nav>
     </div>

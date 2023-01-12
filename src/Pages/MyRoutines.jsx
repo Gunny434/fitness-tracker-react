@@ -1,18 +1,10 @@
 import React from "react";
-import LogMeOut from "../Components/LogMeOut";
 import AllMyRoutines from "../Components/AllMyRoutines";
 import AddRoutine from "../Components/AddRoutine";
 
-const MyRoutines = ({token, setToken, activities, setActivities, routines, setRoutines, userId}) => {
+const MyRoutines = ({token, activities, setActivities, routines, setRoutines, userId}) => {
     return (
       <div className="myRoutines_page">
-        { token &&
-          <LogMeOut
-            token={ token } 
-            setToken={ setToken }/>
-        }
-        
-        
         <h2>Create New Routine:</h2>
           <AddRoutine token={ token } routines={ routines } setRoutines={ setRoutines } />
         

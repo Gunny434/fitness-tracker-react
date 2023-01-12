@@ -11,6 +11,7 @@ import Navbar from "./Pages/Navbar";
 import Routines from "./Pages/Routines";
 import Activities from "./Pages/Activities";
 import MyRoutines from "./Pages/MyRoutines";
+import LogOut from "./Pages/LogOut";
 
 function App() {
     const [routines, setRoutines] = useState([]);
@@ -52,6 +53,8 @@ function App() {
                     <Route path='/routines' element={ <Routines token={ token } setToken={ setToken } routines={ routines } setRoutines={ setRoutines } /> }/>
                     <Route path='/activities' element={ <Activities token={ token } setToken={ setToken } activities={ activities } setActivities={ setActivities } /> }/>
                     <Route path='/myroutines' element={ <MyRoutines token={ token } setToken={ setToken } activities={ activities } setActivities={ setActivities } routines={ routines } setRoutines={ setRoutines } userId={ userId }/> }/>
+
+                    <Route path='/logout' element={ <LogOut setToken={setToken} /> } />
 
                     <Route path='*' element={<Navigate replace to='/' />} />
                 </Routes>
