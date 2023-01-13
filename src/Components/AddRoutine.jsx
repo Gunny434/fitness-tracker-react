@@ -30,20 +30,17 @@ const AddRoutine = ({token, routines, setRoutines, activities, setActivities}) =
 
     return (
       <div id='submit-form-container'>
+        <h2>Create New Routine:</h2>
         <form className="submitForm" onSubmit={handleSubmit}>
           <label className="postLabel" htmlFor='name'>Routine Name:</label>
           <input className="input" type='text' name='name' value={name} onChange={(event) => setName(event.target.value)} />
-          <br/>
-          {/* We are aware that <br/> is bad practice but due to time constraints this is the most convenient option. */}
           <label className="postLabel" htmlFor='goal'>Goal:</label>
           <input className="input" type='text' name='goal' value={goal} onChange={(event) => setGoal(event.target.value)}/>
-          <br/>
           <label className="postLabel" htmlFor='isPublic'>Visibility:</label>
           <select onChange={e => setIsPublic(e.target.value)}>
             <option value="">Private</option>
             <option value="true">Public</option>
           </select>
-          <br/>
           <button type='submit'>Submit</button>
           <div className="createRoutineError">{createRoutineError}</div>
         </form>

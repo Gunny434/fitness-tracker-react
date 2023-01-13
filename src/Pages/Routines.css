@@ -1,0 +1,53 @@
+.routines_page {
+    display: flex;
+    flex-direction: column;
+}
+
+.portside {
+    display: flex;
+    flex-direction: column;
+    /* text-align: left; */
+}
+
+.search {
+    align-self: center;
+    min-width: 60%;
+    height: 50px;
+    text-align: center;
+}
+
+.publicRoutinesContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.singleroutine {
+    border: solid;
+    border-radius: 5px;
+    box-shadow: 2px 3px 5px black;
+    margin: 10px 10px 10px 0px;
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 500px;
+    max-height: 500px;
+}
+
+.routineInfo {
+    border-right: 1px solid black;
+    padding: 5px;
+    width: 200px;
+}
+
+.routineActivitiesHolder {
+    padding: 5px 10px 5px 5px;
+    overflow: auto;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 300px;
+}
+
+.singleActivityInRoutine form {
+    width: 25%;
+}

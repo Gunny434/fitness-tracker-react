@@ -1,6 +1,7 @@
 
 import PublicRoutines from "../Components/PublicRoutines";
 import React from "react";
+import "./Routines.css";
 
 const Routines = ({token, routines, setRoutines}) => {
     return (

@@ -28,16 +28,18 @@ const PublicRoutines = ({routines, setRoutines}) => {
                 type="text"
                 onChange={(e) => setSearchTerm(e.target.value)}
             ></input>
-            <div className="publicRountinesContainer">
+            <div className="publicRoutinesContainer">
                 {filteredRoutines.map((routine) => {
                     return (
                         <div className="singleroutine" key={routine.id}>
-                            <h2>Routine: {routine.name}</h2>
-                            <p>Goal: {routine.goal}</p>
-                            <p>Creator: {routine.creatorName}</p>
+                            <div className="routineInfo">
+                                <h2>Routine: {routine.name}</h2>
+                                <p>Goal: {routine.goal}</p>
+                                <p>Creator: {routine.creatorName}</p>
+                            </div>
                             <div className="routineActivitiesHolder">
                                 <h3>Activities:</h3>
-                                {routine.activities.map((activity) => {
+                                {routine?.activities.map((activity) => {
                                     return (
                                         <div className="singleActivityInRoutine" key={activity.id}>
                                             <h4>{activity.name}</h4>
@@ -51,6 +53,9 @@ const PublicRoutines = ({routines, setRoutines}) => {
                                         </div>
                                     )
                                 })}
+                                { routine.activities.length == 0 &&
+                                    <p>Nothing yet!</p>
+                                }
                             </div>
                         </div>
                     )

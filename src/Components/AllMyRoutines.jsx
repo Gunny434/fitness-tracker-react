@@ -17,6 +17,7 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
     const [editActivityId, setEditActivityId] = useState(0);
     const [deleteRoutineId, setDeleteRoutineId] = useState(0);
     const [deleteActivityId, setDeleteActivityId] = useState(0);
+    const [typeOfError, setTypeOfError] = useState("");
     
     try {
         useEffect(() => {
@@ -38,6 +39,7 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
 
     return (
         <div className="portside">
+            <h1>All My Routines:</h1>
             <input
                 className="search"
                 placeholder="Search for posts by Title"
@@ -45,107 +47,19 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
                 type="text"
                 onChange={(e) => setSearchTerm(e.target.value)}
             ></input>
-            <div className="publicRountinesContainer">
+            <div className="myRoutinesContainer">
                 {filteredRoutines?.map((routine) => {
                     return (
                         <div className="singleroutine" key={routine.id}>
-                            <h2>Routine: {routine.name}</h2>
-                            {/* - - - - - - - - - - - - - - EDIT ROUTINE BUTTON HERE - - - - - - - - - - - - - - */}
-                            { (routine.id != editRoutineId) &&
-                                <form onSubmit={async (e) => {
-                                    e.preventDefault();
-                                    console.log("Editing Routine", routine.id, ":", routine.name);
-                                    setEditRoutineId(routine.id);
-                                    setRoutineId(0);
-                                    setDeleteRoutineId(0);
-                                    setDeleteActivityId(0);
-                                    setEditActivityId(0);
-                                    setNewName(routine.name);
-                                    setNewGoal(routine.goal);
-                                    setNewIsPublic(false);
-                                }}>
-                                    <button type="submit">Edit Routine</button>
-                                </form>
-                            }
-                            { (routine.id === editRoutineId) &&
-                                <form onSubmit={async (e) => {
-                                    e.preventDefault();
-                                    const editedRoutine = await editRoutine(routine.id, newName, newGoal, newIsPublic, token);
-                                    console.log("editedRoutine:", editedRoutine);
-                                    if (useEffectSetter) {
-                                        setUseEffectSetter(false)
-                                    } else {
-                                        setUseEffectSetter(true)
-                                    };
-                                    setEditRoutineId(0);
-                                    setNewName(routine.name);
-                                    setNewGoal(routine.goal);
-                                    setNewIsPublic(false);
-                                }}>
-                                    <label className="postLabel" htmlFor='newName'>New Name:</label>
-                                    <input className="input" type='text' name='newName' value={newName} onChange={(event) => setNewName(event.target.value)} />
-                                    <br/>
-                                    <label className="postLabel" htmlFor='newGoal'>New Goal:</label>
-                                    <input className="input" type='text' name='newGoal' value={newGoal} onChange={(event) => setNewGoal(event.target.value)} />
-                                    <br/>
-                                    <label className="postLabel" htmlFor='isPublic'>Visibility:</label>
-                                    <select onChange={e => setNewIsPublic(!!e.target.value)}>
-                                        <option value="">Private</option>
-                                        <option value="true">Public</option>
-                                    </select>
-                                    <br/>
-                                    <button type="submit">Submit Changes</button>
-                                </form>
-                            }
-                            {/* - - - - - - - - - - - - - - DELETE ROUTINE BUTTON HERE - - - - - - - - - - - - - - */}
-                            { (routine.id != deleteRoutineId) &&
-                                <form onSubmit={async (e) => {
-                                    e.preventDefault();
-                                    console.log("Editing Routine", routine.id, ":", routine.name);
-                                    setDeleteRoutineId(routine.id);
-                                    setEditRoutineId(0);
-                                    setRoutineId(0);
-                                    setDeleteActivityId(0);
-                                    setEditActivityId(0);
-                                }}>
-                                    <button type="submit">Delete Routine</button>
-                                </form>
-                            }
-                            { (routine.id === deleteRoutineId) &&
-                                <div className="delete_checker">
-                                    <p>Are you sure you would like to delete this routine?</p>
-                                    <form onSubmit={async (e) => {
-                                        e.preventDefault();
-                                        const deletedRoutine = await deleteRoutine(routine.id, token);
-                                        console.log("deletedRoutine:", deletedRoutine);
-                                        if (useEffectSetter) {
-                                            setUseEffectSetter(false)
-                                        } else {
-                                            setUseEffectSetter(true)
-                                        };
-                                        setDeleteRoutineId(0);
-                                    }}>
-                                        <button type="submit">Yes I'm Sure</button>
-                                    </form>
-                                    <form onSubmit={async (e) => {
-                                        e.preventDefault();
-                                        console.log(`Routine ${routine.name} was not deleted.`);
-                                        if (useEffectSetter) {
-                                            setUseEffectSetter(false)
-                                        } else {
-                                            setUseEffectSetter(true)
-                                        };
-                                        setDeleteRoutineId(0);
-                                    }}>
-                                        <button type="submit">No, take me back</button>
-                                    </form>
+                            <div className="routineInfo">
+                                <div className="top">
+                                    <h2>Routine: {routine.name}</h2>
+                                    <p>Goal: {routine.goal}</p>
                                 </div>
-                            }
-                            <p>Goal: {routine.goal}</p>
-                            <div className="routineActivitiesHolder">
+                                <div className="bottom">
                                 {/* - - - - - - - - - - - - - - ADD ACTIVITY BUTTON HERE - - - - - - - - - - - - - - */}
                                 { (routine.id !== routineId) &&
-                                    <form onSubmit={async (e) => {
+                                    <form className="submitActivityForm" onSubmit={async (e) => {
                                         e.preventDefault();
                                         console.log("Selected Routine:", routine.name);
                                         setRoutineId(routine.id);
@@ -158,7 +72,7 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
                                     </form>
                                 }
                                 { (routine.id === routineId) &&
-                                    <form onSubmit={async (e) => {
+                                    <form className="submitActivityForm" onSubmit={async (e) => {
                                         e.preventDefault();
                                         await addActivityToRoutine(routineId, activityId, count, duration, token);
                                         if (useEffectSetter) {
@@ -179,16 +93,105 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
                                                 )
                                             })}
                                         </select>
-                                        <br/>
-                                        <label className="postLabel" htmlFor='duration'>Duration/Repetitions:</label>
+                                        <label className="postLabel" htmlFor='duration'>Duration:</label>
                                         <input className="input" type='text' name='duration' value={duration} onChange={(event) => setDuration(event.target.value)} />
-                                        <br/>
-                                        <label className="postLabel" htmlFor='count'>Count (where applicable):</label>
+                                        <label className="postLabel" htmlFor='count'>Count:</label>
                                         <input className="input" type='text' name='count' value={count} onChange={(event) => setCount(event.target.value)} />
-                                        <br/>
+                                        <p>{typeOfError}</p>
                                         <button type="submit">Add to Routine</button>
                                     </form>
                                 }
+                                {/* - - - - - - - - - - - - - - EDIT ROUTINE BUTTON HERE - - - - - - - - - - - - - - */}
+                                { (routine.id != editRoutineId) &&
+                                    <form className="submitActivityForm" onSubmit={async (e) => {
+                                        e.preventDefault();
+                                        console.log("Editing Routine", routine.id, ":", routine.name);
+                                        setEditRoutineId(routine.id);
+                                        setRoutineId(0);
+                                        setDeleteRoutineId(0);
+                                        setDeleteActivityId(0);
+                                        setEditActivityId(0);
+                                        setNewName(routine.name);
+                                        setNewGoal(routine.goal);
+                                        setNewIsPublic(false);
+                                    }}>
+                                        <button type="submit">Edit Routine</button>
+                                    </form>
+                                }
+                                { (routine.id === editRoutineId) &&
+                                    <form className="submitActivityForm" onSubmit={async (e) => {
+                                        e.preventDefault();
+                                        const editedRoutine = await editRoutine(routine.id, newName, newGoal, newIsPublic, token);
+                                        console.log("editedRoutine:", editedRoutine);
+                                        if (useEffectSetter) {
+                                            setUseEffectSetter(false)
+                                        } else {
+                                            setUseEffectSetter(true)
+                                        };
+                                        setEditRoutineId(0);
+                                        setNewName(routine.name);
+                                        setNewGoal(routine.goal);
+                                        setNewIsPublic(false);
+                                    }}>
+                                        <label className="postLabel" htmlFor='newName'>New Name:</label>
+                                        <input className="input" type='text' name='newName' value={newName} onChange={(event) => setNewName(event.target.value)} />
+                                        <label className="postLabel" htmlFor='newGoal'>New Goal:</label>
+                                        <input className="input" type='text' name='newGoal' value={newGoal} onChange={(event) => setNewGoal(event.target.value)} />
+                                        <label className="postLabel" htmlFor='isPublic'>Visibility:</label>
+                                        <select onChange={e => setNewIsPublic(!!e.target.value)}>
+                                            <option value="">Private</option>
+                                            <option value="true">Public</option>
+                                        </select>
+                                        <button type="submit">Submit Changes</button>
+                                    </form>
+                                }
+                                {/* - - - - - - - - - - - - - - DELETE ROUTINE BUTTON HERE - - - - - - - - - - - - - - */}
+                                { (routine.id != deleteRoutineId) &&
+                                    <form onSubmit={async (e) => {
+                                        e.preventDefault();
+                                        console.log("Editing Routine", routine.id, ":", routine.name);
+                                        setDeleteRoutineId(routine.id);
+                                        setEditRoutineId(0);
+                                        setRoutineId(0);
+                                        setDeleteActivityId(0);
+                                        setEditActivityId(0);
+                                    }}>
+                                        <button type="submit">Delete Routine</button>
+                                    </form>
+                                }
+                                { (routine.id === deleteRoutineId) &&
+                                    <div className="delete_checker">
+                                        <p>Are you sure you would like to delete this routine?</p>
+                                        <form onSubmit={async (e) => {
+                                            e.preventDefault();
+                                            const deletedRoutine = await deleteRoutine(routine.id, token);
+                                            console.log("deletedRoutine:", deletedRoutine);
+                                            if (useEffectSetter) {
+                                                setUseEffectSetter(false)
+                                            } else {
+                                                setUseEffectSetter(true)
+                                            };
+                                            setDeleteRoutineId(0);
+                                        }}>
+                                            <button type="submit">Yes I'm Sure</button>
+                                        </form>
+                                        <form onSubmit={async (e) => {
+                                            e.preventDefault();
+                                            console.log(`Routine ${routine.name} was not deleted.`);
+                                            if (useEffectSetter) {
+                                                setUseEffectSetter(false)
+                                            } else {
+                                                setUseEffectSetter(true)
+                                            };
+                                            setDeleteRoutineId(0);
+                                        }}>
+                                            <button type="submit">No, take me back</button>
+                                        </form>
+                                    </div>
+                                }
+                                </div>
+                            </div>
+                            <div className="routineActivitiesHolder">
                                 <h3>Activities:</h3>
                                 {routine?.activities?.map((activity) => {
                                     return (
@@ -203,7 +206,7 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
                                             }
                                             {/* - - - - - - - - - - - - - - EDIT ACTIVITY BUTTON HERE - - - - - - - - - - - - - - */}
                                             { (activity.id != editActivityId) &&
-                                                <form onSubmit={async (e) => {
+                                                <form className="submitActivityForm" onSubmit={async (e) => {
                                                     e.preventDefault();
                                                     console.log(`Editing Activity ${activity.id}: ${activity.name}`);
                                                     setEditActivityId(activity.id);
@@ -216,7 +219,7 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
                                                 </form>
                                             }
                                             { (activity.id === editActivityId) &&
-                                                <form onSubmit={async (e) => {
+                                                <form className="submitActivityForm" onSubmit={async (e) => {
                                                     e.preventDefault();
                                                     const editedActivity = await editActivity(activity.routineActivityId, newDuration, newCount, token);
                                                     console.log("editedActivity:", editedActivity);
@@ -232,7 +235,6 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
                                                 }}>
                                                     <label className="postLabel" htmlFor='newDuration'>New Duration/Reps:</label>
                                                     <input className="input" type='text' name='newDuration' value={newDuration} onChange={(event) => setNewDuration(event.target.value)} />
-                                                    <br/>
                                                     <label className="postLabel" htmlFor='newCount'>New Count:</label>
                                                     <input className="input" type='text' name='newCount' value={newCount} onChange={(event) => setNewCount(event.target.value)} />
                                                     <br/>
@@ -241,7 +243,7 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
                                             }
                                             {/* - - - - - - - - - - - - - - DELETE ACTIVITY BUTTON HERE - - - - - - - - - - - - - - */}
                                             { (activity.id != deleteActivityId) &&
-                                                <form onSubmit={async (e) => {
+                                                <form className="submitActivityForm" onSubmit={async (e) => {
                                                     e.preventDefault();
                                                     console.log("Deleting Activity", activity.name, "from", routine.name);
                                                     setDeleteActivityId(activity.id);
