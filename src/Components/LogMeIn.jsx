@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./LogMeIn.css";
 
 import { getUserId, login } from "../api/auth";
@@ -10,9 +10,7 @@ const LogMeIn = ({setToken, setUserId}) => {
     const [password, setPassword] = useState("");
     const [passwordError, setPasswordError] = useState("");
 
-    if (localStorage.token) {
-        return redirect("/");
-    };
+    const getMeOuttaHere = useNavigate("/myroutines");
 
     return (
         <div className="login-bar">
@@ -34,6 +32,7 @@ const LogMeIn = ({setToken, setUserId}) => {
                     localStorage.setItem("userID", userId);
                     setUsername("");
                     setPassword("");
+                    getMeOuttaHere("/myroutines");
                     };
                 }   catch(error)   {
                     console.error()

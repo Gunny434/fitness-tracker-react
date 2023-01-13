@@ -17,7 +17,6 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
     const [editActivityId, setEditActivityId] = useState(0);
     const [deleteRoutineId, setDeleteRoutineId] = useState(0);
     const [deleteActivityId, setDeleteActivityId] = useState(0);
-    const [typeOfError, setTypeOfError] = useState("");
     
     try {
         useEffect(() => {
@@ -94,10 +93,10 @@ const AllMyRoutines = ({token, activities, setActivities, routines, setRoutines,
                                             })}
                                         </select>
                                         <label className="postLabel" htmlFor='duration'>Duration:</label>
-                                        <input className="input" type='text' name='duration' value={duration} onChange={(event) => setDuration(event.target.value)} />
+                                        <input className="input" type='number' name='duration' value={duration} onChange={(event) => setDuration(event.target.value)} />
                                         <label className="postLabel" htmlFor='count'>Count:</label>
-                                        <input className="input" type='text' name='count' value={count} onChange={(event) => setCount(event.target.value)} />
-                                        <p>{typeOfError}</p>
+                                        <input className="input" type='number' name='count' value={count} onChange={(event) => setCount(event.target.value)} />
+                                        <p></p>
                                         <button type="submit">Add to Routine</button>
                                     </form>
                                 }
